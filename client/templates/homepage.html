@@ -1,0 +1,90 @@
+<template name="homepage">
+    <div class="container-fluid">
+        <div class="page-header">
+        <h1>{{title}}</h1>
+        </div>
+        {{#if showListDialog}}
+            {{> doodle}}
+        {{/if}}
+        <button class="btn btn-large btn-success addList">Add List</button>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>When</th>
+                    <th>Place</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each lists}}
+                    {{> listRow}}
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template name="listRow">
+    <tr class="listRow">
+        <td>{{name}}</td>
+        <td>{{formatDate when}}</td>
+        <td>{{place}}</td>
+    </tr>
+</template>
+
+<template name="doodle">
+    <div id="modal" class="modal">
+    <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    </div>
+    <div class="modal-body">
+        <label for="name">Name</label><input type="text" class="input input-xlarge name" name="name" value="{{list.name}}" id="name">
+        <label for="when">Date</label><input class="when" type="date" name="when" value="{{list.when}}" id="when">
+        <label for="place">Place</label><input type="text" class="input input-xlarge place" name="place" value="{{list.place}}" id="place">
+    </div>
+    <div class="modal-footer">
+        {{#if editingList}}
+            <a href="#" class="btn btn-danger remove">Delete</a>
+            <a href="#" class="btn btn-warning save">Update</a>
+        {{else}}
+            <a href="#" class="btn btn-success save">Save</a>
+        {{/if}}
+    <a href="#" class="btn cancel" data-dismiss="modal">Cancel</a>
+    </div>
+    {{>participantList}}
+    </div>
+</template>
+
+<template name="participantList">
+    <form method="GET" id="participantForm"></form>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vote</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each participant}}
+                {{> participants}}
+            {{/each}}
+            <tr>
+                <td><input type="text" name="participantName" form="participantForm" class="participantName"></td>
+                <td>
+                    <select name="vote" id="vote" class="vote" form="participantForm">
+                        <option value="ja">Ja</option>
+                        <option value="nein">Nein</option>
+                    </select>
+                </td>
+                <td><button type="button" form="participantForm" class="btn btn-success participantSave">ok</button></td>
+            </tr>
+        </tbody>
+    </table>
+</template>
+
+<template name="participants">
+    <tr>
+        <td>{{name}}</td>
+        <td>{{vote}}</td>
+    </tr>
+</template>
