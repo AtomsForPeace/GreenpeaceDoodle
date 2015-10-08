@@ -41,8 +41,8 @@ if (Meteor.isClient) {
     list: function(){
       return Lists.findOne(Session.get('editingList'));
     },
-    participant: function(){
-      return Participants.find({
+    participants: function(){
+      return Lists.find({
         doodle: Session.get('editingList')
       });
     },
@@ -93,12 +93,13 @@ if (Meteor.isClient) {
     'click .participantSave': function(event, template){
       var name = template.find('.participantName').value;
       var vote = template.find('.vote').value;
-      console.log(123)
-      Participants.insert({
-        doodle: Session.get('editingList'),
-        name: name,
-        vote: vote
-      });
+      // console.log('blah')
+      // Lists.insert({
+      //   doodle: Session.get('editingList'),
+      //   name: name,
+      //   vote: vote
+      // });
+      addParticipants({participant_name: name, vote: vote});
     }
   });
 
@@ -106,7 +107,8 @@ if (Meteor.isClient) {
     Lists.insert({
       name: name,
       when: when,
-      place: place
+      place: place,
+      participants: [],
     });
   };
 
@@ -115,7 +117,15 @@ if (Meteor.isClient) {
     return true;
   };
 
-  var removeList = function(){
-    Lists.remove({_id: Session.get('editingList')});
+  var addParticipants = function(participants){
+    Lists.update(Session.get('editingList'), {$push: {participants: participants}});
   };
+
+  // var remoteParticipant = function(participant){
+  //   Lists.update(Session.get('editingList'), {$pull: {participants: participant}})
+  // }
+
+  // var removeList = function(){
+  //   Lists.remove({_id: Session.get('editingList')});
+  // };
 }
