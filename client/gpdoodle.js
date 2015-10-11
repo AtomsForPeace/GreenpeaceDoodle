@@ -113,11 +113,7 @@ if (Meteor.isClient) {
   };
 
   var addParticipants = function(participants){
-    console.log(1)
     Lists.update(Session.get('editingList'), {$push: {participants: participants}});
-    console.log(Session.get('editingList'))
-    console.log(Lists.findOne(Session.get('editingList')))
-    console.log(2)
   };
 
   // var removeParticipant = function(participant){
