@@ -51,7 +51,9 @@
         {{/if}}
     <a href="#" class="btn cancel" data-dismiss="modal">Cancel</a>
     </div>
-    {{>participantList}}
+    {{#if participantList}}
+        {{>participantList}}
+    {{/if}}
     </div>
 </template>
 
@@ -65,8 +67,8 @@
             </tr>
         </thead>
         <tbody>
-            {{#each participant}}
-                {{> participants}}
+            {{#each participants}}
+                {{> participant}}
             {{/each}}
             <tr>
                 <td><input type="text" name="participantName" form="participantForm" class="participantName"></td>
@@ -82,9 +84,9 @@
     </table>
 </template>
 
-<template name="participants">
+<template name="participant">
     <tr>
-        <td>{{name}}</td>
+        <td>{{participantName}}</td>
         <td>{{vote}}</td>
     </tr>
 </template>

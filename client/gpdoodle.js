@@ -1,5 +1,5 @@
 Lists = new Meteor.Collection('lists')
-Participants = new Meteor.Collection('participants')
+// Participants = new Meteor.Collection('participants')
 
 if (Meteor.isClient) {
   Session.setDefault('showListDialog', false)
@@ -40,11 +40,12 @@ if (Meteor.isClient) {
     },
     list: function(){
       return Lists.findOne(Session.get('editingList'));
-    },
+    }
+  });
+
+  Template.participantList.helpers({
     participants: function(){
-      return Lists.find({
-        doodle: Session.get('editingList')
-      });
+      return Lists.findOne(Session.get('editingList')).participants;
     },
   });
 
@@ -93,13 +94,7 @@ if (Meteor.isClient) {
     'click .participantSave': function(event, template){
       var name = template.find('.participantName').value;
       var vote = template.find('.vote').value;
-      // console.log('blah')
-      // Lists.insert({
-      //   doodle: Session.get('editingList'),
-      //   name: name,
-      //   vote: vote
-      // });
-      addParticipants({participant_name: name, vote: vote});
+      addParticipants({participantName: name, vote: vote});
     }
   });
 
@@ -118,14 +113,18 @@ if (Meteor.isClient) {
   };
 
   var addParticipants = function(participants){
+    console.log(1)
     Lists.update(Session.get('editingList'), {$push: {participants: participants}});
+    console.log(Session.get('editingList'))
+    console.log(Lists.findOne(Session.get('editingList')))
+    console.log(2)
   };
 
-  // var remoteParticipant = function(participant){
+  // var removeParticipant = function(participant){
   //   Lists.update(Session.get('editingList'), {$pull: {participants: participant}})
   // }
 
-  // var removeList = function(){
-  //   Lists.remove({_id: Session.get('editingList')});
-  // };
+  var removeList = function(){
+    Lists.remove({_id: Session.get('editingList')});
+  };
 }
