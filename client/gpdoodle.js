@@ -94,7 +94,11 @@ if (Meteor.isClient) {
     'click .participantSave': function(event, template){
       var name = template.find('.participantName').value;
       var vote = template.find('.vote').value;
-      addParticipants({participantName: name, vote: vote});
+      addParticipants({_id: Random.id(), participantName: name, vote: vote});
+    },
+    'click .removeParticipant': function(event, template){
+      _id = event.target.getAttribute('data-id');
+      removeParticipant(_id);
     }
   });
 
@@ -116,9 +120,9 @@ if (Meteor.isClient) {
     Lists.update(Session.get('editingList'), {$push: {participants: participants}});
   };
 
-  // var removeParticipant = function(participant){
-  //   Lists.update(Session.get('editingList'), {$pull: {participants: participant}})
-  // }
+  var removeParticipant = function(_id){
+    Lists.update(Session.get('editingList'), {$pull: {participants: {_id: _id}}})
+  }
 
   var removeList = function(){
     Lists.remove({_id: Session.get('editingList')});
