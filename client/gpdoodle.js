@@ -4,6 +4,7 @@ Lists = new Meteor.Collection('lists')
 if (Meteor.isClient) {
   Session.setDefault('showListDialog', false)
   Session.setDefault('editingList', null)
+  Session.setDefault('showDeleteDoodle', false)
 
   Router.route('/', function () {
     this.render('homepage');
@@ -84,9 +85,15 @@ if (Meteor.isClient) {
       Session.set('editingList', null);
     },
     'click .remove': function(event, template){
-      removeList()
-      Session.set('showListDialog', false);
-      Session.set('editingList', null);
+      Session.set('showDeleteDoodle', true);
+      var confirmDelete = confirm("Doodle löschen?")
+      if (r == true) {
+        removeList()
+        Session.set('showListDialog', false);
+        Session.set('editingList', null);
+      } else {
+        return false;
+      }
     }
   });
 
