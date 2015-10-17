@@ -87,7 +87,7 @@ if (Meteor.isClient) {
     'click .remove': function(event, template){
       Session.set('showDeleteDoodle', true);
       var confirmDelete = confirm("Doodle löschen?")
-      if (r == true) {
+      if (confirmDelete == true) {
         removeList()
         Session.set('showListDialog', false);
         Session.set('editingList', null);
